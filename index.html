@@ -14,6 +14,41 @@
     <script defer src="/scripts/main.js"></script>
 </head>
 <body>
+    <div class="editor-ui">
+        <button id="editToggleBtn" class="editor-toggle" aria-controls="editorPanel" aria-expanded="false" title="Edit site">Edit</button>
+        <div id="editorOverlay" class="editor-overlay is-hidden" role="presentation"></div>
+        <aside id="editorPanel" class="editor-panel is-hidden" role="dialog" aria-modal="true" aria-labelledby="editorTitle">
+            <header class="editor-panel__header">
+                <h2 id="editorTitle">Editor</h2>
+                <button type="button" class="editor-panel__close" aria-label="Close editor">×</button>
+            </header>
+            <div class="editor-panel__content">
+                <div class="editor-control">
+                    <label>
+                        <input type="checkbox" id="editorEnableText" />
+                        Enable text editing
+                    </label>
+                </div>
+                <section class="editor-section">
+                    <h3 class="editor-section__title">Colors</h3>
+                    <div class="editor-subtitle">Presets</div>
+                    <div id="editorPresetList" class="editor-presets" aria-label="Theme presets"></div>
+                    <div class="editor-subtitle">Custom</div>
+                    <div class="editor-custom">
+                        <label class="editor-field">
+                            <span class="editor-field__label">Primary color</span>
+                            <input type="color" id="customPrimary" value="#3b82f6" />
+                        </label>
+                        <label class="editor-field editor-field--inline">
+                            <input type="checkbox" id="themeDarkMode" />
+                            <span>Dark mode</span>
+                        </label>
+                        <button type="button" id="resetThemeBtn" class="editor-reset">Reset</button>
+                    </div>
+                </section>
+            </div>
+        </aside>
+    </div>
     <main id="app">
         <!-- Hero section injected here -->
     </main>

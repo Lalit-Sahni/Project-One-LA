@@ -7,6 +7,7 @@ function importHero() {
             var mount = document.getElementById('app');
             mount.innerHTML = html;
             attachHeroInteractions();
+            initializeInlineEditorUI();
             // Load subsequent sections in order to avoid race conditions
             importOverview();
         })
@@ -718,6 +719,8 @@ function importRules() {
             temp.innerHTML = html;
             mount.appendChild(temp.firstElementChild);
             attachRulesInteractions();
+            // Load registration section
+            importRegister();
         })
         .catch(function(err) { console.error('Failed to load rules:', err); });
 }
@@ -761,4 +764,376 @@ function attachRulesInteractions() {
             }
         });
     });
+}
+
+function importRegister() {
+    fetch('/sections/register.html', { cache: 'no-store' })
+        .then(function(response) { return response.text(); })
+        .then(function(html) {
+            var mount = document.getElementById('app');
+            var temp = document.createElement('div');
+            temp.innerHTML = html;
+            mount.appendChild(temp.firstElementChild);
+            attachRegisterInteractions();
+        })
+        .catch(function(err) { console.error('Failed to load register:', err); });
+}
+
+function attachRegisterInteractions() {
+    var form = document.getElementById('registrationForm');
+    if (!form) return;
+
+    var teamSizeSelect = document.getElementById('teamSize');
+    var addMemberBtn = document.getElementById('addMemberBtn');
+    var teamMembersContainer = document.getElementById('teamMembers');
+    var memberCount = 0;
+
+    function createTeamMemberFields(memberNumber) {
+        var memberDiv = document.createElement('div');
+        memberDiv.className = 'team-member';
+        memberDiv.innerHTML = "\n            <div class=\"team-member__header\">\n                <h4 class=\"team-member__title\">Team Member " + memberNumber + "</h4>\n                <button type=\"button\" class=\"team-member__remove\" onclick=\"removeTeamMember(this)\">\n                    <svg class=\"icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                        <line x1=\"18\" y1=\"6\" x2=\"6\" y2=\"18\"></line>\n                        <line x1=\"6\" y1=\"6\" x2=\"18\" y2=\"18\"></line>\n                    </svg>\n                </button>\n            </div>\n            <div class=\"form-row\">\n                <div class=\"form-group\">\n                    <label class=\"form-label\">First Name *</label>\n                    <input type=\"text\" name=\"member" + memberNumber + "_firstName\" class=\"form-input\" placeholder=\"Enter first name\" required autocomplete=\"given-name\">\n                    <span class=\"form-error\"></span>\n                </div>\n                <div class=\"form-group\">\n                    <label class=\"form-label\">Last Name *</label>\n                    <input type=\"text\" name=\"member" + memberNumber + "_lastName\" class=\"form-input\" placeholder=\"Enter last name\" required autocomplete=\"family-name\">\n                    <span class=\"form-error\"></span>\n                </div>\n            </div>\n            <div class=\"form-row\">\n                <div class=\"form-group\">\n                    <label class=\"form-label\">Email Address *</label>\n                    <input type=\"email\" name=\"member" + memberNumber + "_email\" class=\"form-input\" placeholder=\"your.email@university.edu\" required autocomplete=\"email\">\n                    <span class=\"form-error\"></span>\n                </div>\n                <div class=\"form-group\">\n                    <label class=\"form-label\">Phone Number *</label>\n                    <input type=\"tel\" name=\"member" + memberNumber + "_phone\" class=\"form-input\" placeholder=\"+1 (555) 123-4567\" required autocomplete=\"tel\">\n                    <span class=\"form-error\"></span>\n                </div>\n            </div>\n            <div class=\"form-row\">\n                <div class=\"form-group\">\n                    <label class=\"form-label\">Degree Program *</n\">\n                    <select name=\"member" + memberNumber + "_degree\" class=\"form-select\" required>\n                        <option value=\"\">Select degree program</option>\n                        <option value=\"undergraduate\">Undergraduate</option>\n                        <option value=\"graduate\">Graduate (Master's)</option>\n                        <option value=\"phd\">PhD</option>\n                        <option value=\"mba\">MBA</option>\n                    </select>\n                    <span class=\"form-error\"></span>\n                </div>\n                <div class=\"form-group\">\n                    <label class=\"form-label\">Major/Field of Study *</label>\n                    <input type=\"text\" name=\"member" + memberNumber + "_major\" class=\"form-input\" placeholder=\"Business, Engineering, etc.\" required autocomplete=\"organization-title\">\n                    <span class=\"form-error\"></span>\n                </div>\n            </div>\n        ";
+        return memberDiv;
+    }
+
+    if (teamSizeSelect) {
+        teamSizeSelect.addEventListener('change', function() {
+            var selectedSize = parseInt(this.value, 10);
+            teamMembersContainer.innerHTML = '';
+            memberCount = 0;
+            for (var i = 1; i < selectedSize; i++) {
+                memberCount++;
+                var memberDiv = createTeamMemberFields(memberCount);
+                teamMembersContainer.appendChild(memberDiv);
+            }
+            if (selectedSize === 3) {
+                addMemberBtn.style.display = 'inline-flex';
+            } else {
+                addMemberBtn.style.display = 'none';
+            }
+        });
+    }
+
+    if (addMemberBtn) {
+        addMemberBtn.addEventListener('click', function() {
+            if (memberCount < 3) {
+                memberCount++;
+                var memberDiv = createTeamMemberFields(memberCount);
+                teamMembersContainer.appendChild(memberDiv);
+                if (memberCount >= 3) {
+                    addMemberBtn.style.display = 'none';
+                }
+            }
+        });
+    }
+
+    window.removeTeamMember = function(button) {
+        var el = button.closest('.team-member');
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+        memberCount--;
+        if (teamSizeSelect && teamSizeSelect.value === '3' && memberCount < 3) {
+            addMemberBtn.style.display = 'inline-flex';
+        }
+    };
+
+    function validateField(field) {
+        var value = (field.value || '').trim();
+        var errorElement = field.parentNode.querySelector('.form-error');
+        var isValid = true;
+        var errorMessage = '';
+
+        if (field.hasAttribute('required') && !value && field.type !== 'checkbox') {
+            isValid = false;
+            errorMessage = 'This field is required';
+        } else if (field.type === 'email' && value) {
+            var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid email address';
+            }
+        } else if (field.type === 'tel' && value) {
+            var phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+            var digits = value.replace(/[\s\-()]/g, '');
+            if (!phoneRegex.test(digits)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid phone number';
+            }
+        } else if (field.type === 'checkbox' && field.hasAttribute('required') && !field.checked) {
+            isValid = false;
+            errorMessage = 'This agreement is required';
+        }
+
+        if (errorElement) {
+            if (isValid) {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+                errorElement.textContent = '';
+                errorElement.classList.remove('show');
+            } else {
+                field.classList.remove('is-valid');
+                field.classList.add('is-invalid');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('show');
+            }
+        }
+        return isValid;
+    }
+
+    var formFields = form.querySelectorAll('input, select, textarea');
+    Array.prototype.forEach.call(formFields, function(field) {
+        field.addEventListener('blur', function() { validateField(field); });
+        field.addEventListener('input', function() {
+            if (field.classList.contains('is-invalid')) validateField(field);
+        });
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var isValid = true;
+        var firstInvalidField = null;
+        Array.prototype.forEach.call(formFields, function(field) {
+            if (!validateField(field)) {
+                isValid = false;
+                if (!firstInvalidField) firstInvalidField = field;
+            }
+        });
+        if (isValid) {
+            submitForm();
+        } else if (firstInvalidField) {
+            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            firstInvalidField.focus();
+        }
+    });
+
+    function submitForm() {
+        var submitBtn = form.querySelector('.form-submit__button');
+        if (!submitBtn) return;
+        var textEl = submitBtn.querySelector('.text');
+        var originalText = textEl ? textEl.textContent : '';
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        if (textEl) textEl.textContent = 'Registering...';
+
+        var formData = new FormData(form);
+        var data = {};
+        formData.forEach(function(value, key) { data[key] = value; });
+
+        setTimeout(function() {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            if (textEl) textEl.textContent = originalText;
+            showSuccessMessage();
+        }, 2000);
+    }
+
+    function showSuccessMessage() {
+        var overlay = document.createElement('div');
+        overlay.className = 'success-overlay';
+        overlay.innerHTML = "\n            <div class=\"success-modal\">\n                <div class=\"success-icon\">\n                    <svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\">\n                        <path d=\"M22 11.08V12a10 10 0 1 1-5.93-9.14\"></path>\n                        <polyline points=\"22,4 12,14.01 9,11.01\"></polyline>\n                    </svg>\n                </div>\n                <h3>Registration Successful!</h3>\n                <p>Thank you for registering your team. We'll send you a confirmation email shortly with next steps.</p>\n                <button class=\"form-button form-button--primary\" onclick=\"this.closest(' .concat('\'' ,'.success-overlay', '\'') , ').remove()\">\n                    Continue\n                </button>\n            </div>\n        ";
+
+        var style = document.createElement('style');
+        style.textContent = "\n            .success-overlay {\n                position: fixed; inset: 0;\n                background: rgba(0, 0, 0, 0.5);\n                display: flex; align-items: center; justify-content: center;\n                z-index: 1000; animation: fadeIn 0.3s ease;\n            }\n            .success-modal {\n                background: var(--surface); border-radius: 16px; padding: 40px;\n                text-align: center; max-width: 400px; margin: 20px;\n                box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); animation: slideUp 0.3s ease;\n            }\n            .success-icon {\n                width: 64px; height: 64px; background: var(--accent-50); border-radius: 50%;\n                display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--accent-500);\n            }\n            .success-icon svg { width: 32px; height: 32px; }\n            .success-modal h3 { font-size: 1.5rem; font-weight: 600; color: var(--text-color); margin: 0 0 16px 0; }\n            .success-modal p { color: var(--muted-text); margin: 0 0 24px 0; line-height: 1.6; }\n            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }\n            @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }\n        ";
+        document.head.appendChild(style);
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+                if (style.parentNode) style.parentNode.removeChild(style);
+            }
+        });
+    }
+}
+
+// Inline Editor: minimal shell (open/close + enable text editing)
+function initializeInlineEditorUI() {
+    try {
+        var toggleBtn = document.getElementById('editToggleBtn');
+        var overlay = document.getElementById('editorOverlay');
+        var panel = document.getElementById('editorPanel');
+        if (!toggleBtn || !overlay || !panel) return;
+
+        var closeBtn = panel.querySelector('.editor-panel__close');
+        var enableTextCheckbox = document.getElementById('editorEnableText');
+        var appRoot = document.getElementById('app');
+
+        // Theme editor elements
+        var presetList = document.getElementById('editorPresetList');
+        var customPrimary = document.getElementById('customPrimary');
+        var themeDarkMode = document.getElementById('themeDarkMode');
+        var resetThemeBtn = document.getElementById('resetThemeBtn');
+
+        // Global-ish state
+        window.EditorState = window.EditorState || { 
+            isOpen: false, 
+            textEditing: false,
+            theme: {
+                primary: getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim() || '#3b82f6',
+                dark: document.documentElement.getAttribute('data-theme') === 'dark'
+            }
+        };
+
+        function openEditor() {
+            if (window.EditorState.isOpen) return;
+            window.EditorState.isOpen = true;
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            overlay.classList.remove('is-hidden');
+            panel.classList.remove('is-hidden');
+            // Allow CSS transition by activating next frame
+            requestAnimationFrame(function() {
+                overlay.classList.add('is-active');
+                panel.classList.add('is-active');
+            });
+            document.addEventListener('keydown', onKeydown);
+        }
+
+        function closeEditor() {
+            if (!window.EditorState.isOpen) return;
+            window.EditorState.isOpen = false;
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            overlay.classList.remove('is-active');
+            panel.classList.remove('is-active');
+            // Hide after animation
+            setTimeout(function() {
+                overlay.classList.add('is-hidden');
+                panel.classList.add('is-hidden');
+            }, 200);
+            document.removeEventListener('keydown', onKeydown);
+        }
+
+        function onKeydown(e) {
+            if (e.key === 'Escape') closeEditor();
+        }
+
+        function applyTextEditable(enabled) {
+            if (!appRoot) return;
+            var selectors = 'h1,h2,h3,h4,h5,h6,p,span,a,button,small,li,blockquote,figcaption,label';
+            var nodes = Array.prototype.slice.call(appRoot.querySelectorAll(selectors));
+            nodes.forEach(function(node) {
+                if (enabled) {
+                    node.setAttribute('contenteditable', 'true');
+                    node.setAttribute('spellcheck', 'true');
+                } else {
+                    node.removeAttribute('contenteditable');
+                    node.removeAttribute('spellcheck');
+                }
+            });
+        }
+
+        function preventNavWhenEditing(e) {
+            if (!window.EditorState.textEditing) return;
+            var target = e.target;
+            if (!target) return;
+            // Block navigation and form submission while editing text
+            var interactive = target.closest('a,button,[type="submit"],[role="button"]');
+            if (interactive) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }
+
+        function setTextEditing(enabled) {
+            window.EditorState.textEditing = !!enabled;
+            applyTextEditable(window.EditorState.textEditing);
+            if (window.EditorState.textEditing) {
+                document.addEventListener('click', preventNavWhenEditing, true);
+            } else {
+                document.removeEventListener('click', preventNavWhenEditing, true);
+            }
+        }
+
+        // Keep text-edit bindings applied to newly injected sections
+        var mo = new MutationObserver(function(mutations) {
+            if (!window.EditorState.textEditing) return;
+            for (var i = 0; i < mutations.length; i++) {
+                var m = mutations[i];
+                if (m.type === 'childList' && (m.addedNodes || []).length) {
+                    applyTextEditable(true);
+                }
+            }
+        });
+        if (appRoot) {
+            mo.observe(appRoot, { childList: true, subtree: true });
+        }
+
+        // Wire UI events
+        toggleBtn.addEventListener('click', function() {
+            if (window.EditorState.isOpen) closeEditor(); else openEditor();
+        });
+        overlay.addEventListener('click', closeEditor);
+        if (closeBtn) closeBtn.addEventListener('click', closeEditor);
+        if (enableTextCheckbox) {
+            enableTextCheckbox.addEventListener('change', function() {
+                setTextEditing(!!enableTextCheckbox.checked);
+            });
+        }
+
+        // Expose minimal API
+        window.Editor = window.Editor || {};
+        window.Editor.open = openEditor;
+        window.Editor.close = closeEditor;
+        window.Editor.toggle = function() { if (window.EditorState.isOpen) closeEditor(); else openEditor(); };
+        window.Editor.enableTextEditing = setTextEditing;
+
+        // THEME: presets + custom
+        var presets = [
+            { id: 'blue',    name: 'Blue',    color: '#3b82f6' },
+            { id: 'violet',  name: 'Violet',  color: '#8b5cf6' },
+            { id: 'rose',    name: 'Rose',    color: '#f43f5e' },
+            { id: 'emerald', name: 'Emerald', color: '#10b981' },
+            { id: 'amber',   name: 'Amber',   color: '#f59e0b' }
+        ];
+
+        function applyPrimary(hex) {
+            document.documentElement.style.setProperty('--color-primary', hex);
+            window.EditorState.theme.primary = hex;
+        }
+
+        function setDarkMode(enabled) {
+            if (enabled) document.documentElement.setAttribute('data-theme', 'dark');
+            else document.documentElement.removeAttribute('data-theme');
+            window.EditorState.theme.dark = !!enabled;
+        }
+
+        function renderPresets() {
+            if (!presetList) return;
+            presetList.innerHTML = '';
+            presets.forEach(function(p) {
+                var btn = document.createElement('button');
+                btn.className = 'preset-swatch';
+                btn.setAttribute('type', 'button');
+                btn.setAttribute('data-preset', p.id);
+                btn.style.setProperty('--swatch-color', p.color);
+                btn.title = p.name;
+                btn.addEventListener('click', function() {
+                    applyPrimary(p.color);
+                    if (customPrimary) customPrimary.value = p.color;
+                });
+                presetList.appendChild(btn);
+            });
+        }
+
+        if (presetList) renderPresets();
+        if (customPrimary) {
+            try { customPrimary.value = window.EditorState.theme.primary; } catch(_) {}
+            customPrimary.addEventListener('input', function() {
+                applyPrimary(customPrimary.value);
+            });
+        }
+        if (themeDarkMode) {
+            themeDarkMode.checked = !!window.EditorState.theme.dark;
+            themeDarkMode.addEventListener('change', function() {
+                setDarkMode(themeDarkMode.checked);
+            });
+        }
+        if (resetThemeBtn) {
+            resetThemeBtn.addEventListener('click', function() {
+                applyPrimary('#3b82f6');
+                setDarkMode(false);
+                if (customPrimary) customPrimary.value = '#3b82f6';
+                if (themeDarkMode) themeDarkMode.checked = false;
+            });
+        }
+    } catch (err) {
+        console.error('Editor UI failed to initialize:', err);
+    }
 }

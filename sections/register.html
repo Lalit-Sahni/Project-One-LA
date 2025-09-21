@@ -1,0 +1,341 @@
+<section class="register" id="register" aria-label="Registration">
+    <div class="container">
+        <header class="register__header">
+            <h2 class="register__title">Register Your Team</h2>
+            <p class="register__subtitle">Join the Global Strategy Case Competition 2025 and showcase your strategic thinking skills.</p>
+        </header>
+
+        <div class="register__content">
+            <div class="register__form-container">
+                <form class="register-form" id="registrationForm" novalidate>
+                    <!-- Team Information Section -->
+                    <fieldset class="form-section">
+                        <legend class="form-section__title">Team Information</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="teamName" class="form-label">Team Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="teamName" 
+                                    name="teamName" 
+                                    class="form-input" 
+                                    placeholder="Enter your team name"
+                                    required
+                                    autocomplete="organization"
+                                >
+                                <span class="form-error" id="teamName-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="university" class="form-label">University/Institution *</label>
+                                <input 
+                                    type="text" 
+                                    id="university" 
+                                    name="university" 
+                                    class="form-input" 
+                                    placeholder="Your university or institution name"
+                                    required
+                                    autocomplete="organization"
+                                >
+                                <span class="form-error" id="university-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="teamSize" class="form-label">Team Size *</label>
+                                <select id="teamSize" name="teamSize" class="form-select" required>
+                                    <option value="">Select team size</option>
+                                    <option value="3">3 members</option>
+                                    <option value="4">4 members</option>
+                                </select>
+                                <span class="form-error" id="teamSize-error"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Team Leader Section -->
+                    <fieldset class="form-section">
+                        <legend class="form-section__title">Team Leader Information</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="leaderFirstName" class="form-label">First Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="leaderFirstName" 
+                                    name="leaderFirstName" 
+                                    class="form-input" 
+                                    placeholder="Enter first name"
+                                    required
+                                    autocomplete="given-name"
+                                >
+                                <span class="form-error" id="leaderFirstName-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="leaderLastName" class="form-label">Last Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="leaderLastName" 
+                                    name="leaderLastName" 
+                                    class="form-input" 
+                                    placeholder="Enter last name"
+                                    required
+                                    autocomplete="family-name"
+                                >
+                                <span class="form-error" id="leaderLastName-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="leaderEmail" class="form-label">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    id="leaderEmail" 
+                                    name="leaderEmail" 
+                                    class="form-input" 
+                                    placeholder="your.email@university.edu"
+                                    required
+                                    autocomplete="email"
+                                >
+                                <span class="form-error" id="leaderEmail-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="leaderPhone" class="form-label">Phone Number *</label>
+                                <input 
+                                    type="tel" 
+                                    id="leaderPhone" 
+                                    name="leaderPhone" 
+                                    class="form-input" 
+                                    placeholder="+1 (555) 123-4567"
+                                    required
+                                    autocomplete="tel"
+                                >
+                                <span class="form-error" id="leaderPhone-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="leaderDegree" class="form-label">Degree Program *</label>
+                                <select id="leaderDegree" name="leaderDegree" class="form-select" required>
+                                    <option value="">Select degree program</option>
+                                    <option value="undergraduate">Undergraduate</option>
+                                    <option value="graduate">Graduate (Master's)</option>
+                                    <option value="phd">PhD</option>
+                                    <option value="mba">MBA</option>
+                                </select>
+                                <span class="form-error" id="leaderDegree-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="leaderMajor" class="form-label">Major/Field of Study *</label>
+                                <input 
+                                    type="text" 
+                                    id="leaderMajor" 
+                                    name="leaderMajor" 
+                                    class="form-input" 
+                                    placeholder="Business, Engineering, etc."
+                                    required
+                                    autocomplete="organization-title"
+                                >
+                                <span class="form-error" id="leaderMajor-error"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Team Members Section -->
+                    <fieldset class="form-section">
+                        <legend class="form-section__title">Additional Team Members</legend>
+                        <div class="team-members" id="teamMembers">
+                            <!-- Dynamic team member fields will be added here -->
+                        </div>
+                        <button type="button" class="form-button form-button--secondary" id="addMemberBtn">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Add Team Member
+                        </button>
+                    </fieldset>
+
+                    <!-- Experience & Motivation Section -->
+                    <fieldset class="form-section">
+                        <legend class="form-section__title">Experience & Motivation</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="caseExperience" class="form-label">Case Competition Experience *</label>
+                                <select id="caseExperience" name="caseExperience" class="form-select" required>
+                                    <option value="">Select experience level</option>
+                                    <option value="none">No prior experience</option>
+                                    <option value="1-2">1-2 competitions</option>
+                                    <option value="3-5">3-5 competitions</option>
+                                    <option value="6+">6+ competitions</option>
+                                </select>
+                                <span class="form-error" id="caseExperience-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="teamExperience" class="form-label">Team Leadership Experience</label>
+                                <select id="teamExperience" name="teamExperience" class="form-select">
+                                    <option value="">Select experience level</option>
+                                    <option value="none">No leadership experience</option>
+                                    <option value="academic">Academic projects</option>
+                                    <option value="professional">Professional teams</option>
+                                    <option value="both">Both academic and professional</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group--full">
+                                <label for="motivation" class="form-label">Why do you want to participate? *</label>
+                                <textarea 
+                                    id="motivation" 
+                                    name="motivation" 
+                                    class="form-textarea" 
+                                    placeholder="Tell us about your interest in strategic consulting and what you hope to gain from this competition..."
+                                    rows="4"
+                                    required
+                                ></textarea>
+                                <span class="form-error" id="motivation-error"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Agreement Section -->
+                    <fieldset class="form-section">
+                        <legend class="form-section__title">Agreements & Consent</legend>
+                        
+                        <div class="form-row">
+                            <div class="form-group form-group--checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="termsAgreement" name="termsAgreement" required>
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">
+                                        I agree to the <a href="#terms" class="link">Competition Terms & Conditions</a> *
+                                    </span>
+                                </label>
+                                <span class="form-error" id="termsAgreement-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group--checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="privacyAgreement" name="privacyAgreement" required>
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">
+                                        I consent to the <a href="#privacy" class="link">Privacy Policy</a> and data processing *
+                                    </span>
+                                </label>
+                                <span class="form-error" id="privacyAgreement-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group form-group--checkbox">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="communications" name="communications">
+                                    <span class="checkbox-custom"></span>
+                                    <span class="checkbox-text">
+                                        I would like to receive updates about the competition and related events
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <!-- Submit Section -->
+                    <div class="form-submit">
+                        <button type="submit" class="animated-button animated-button--primary form-submit__button">
+                            <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                            </svg>
+                            <span class="text">Register Team</span>
+                            <span class="circle"></span>
+                            <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path>
+                            </svg>
+                        </button>
+                        
+                        <div class="form-submit__info">
+                            <p class="form-submit__note">
+                                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="m9 12 2 2 4-4"></path>
+                                </svg>
+                                Your information is secure and will only be used for competition purposes
+                            </p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="register__sidebar">
+                <div class="register-info">
+                    <h3 class="register-info__title">Registration Details</h3>
+                    
+                    <div class="info-card">
+                        <div class="info-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12,6 12,12 16,14"></polyline>
+                            </svg>
+                        </div>
+                        <div class="info-card__content">
+                            <h4>Registration Deadline</h4>
+                            <p>November 15th, 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="m22 21-2-2m0 0L18 17l-2 2m2-2h4"></path>
+                            </svg>
+                        </div>
+                        <div class="info-card__content">
+                            <h4>Team Requirements</h4>
+                            <p>3-4 members from any university</p>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <div class="info-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                            </svg>
+                        </div>
+                        <div class="info-card__content">
+                            <h4>What You'll Get</h4>
+                            <ul>
+                                <li>Mentorship from industry experts</li>
+                                <li>Access to exclusive datasets</li>
+                                <li>Networking opportunities</li>
+                                <li>Certificate of participation</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="info-card info-card--highlight">
+                        <div class="info-card__icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                        </div>
+                        <div class="info-card__content">
+                            <h4>Need Help?</h4>
+                            <p>Contact us at <a href="mailto:competition@auroralabs.com" class="link">competition@auroralabs.com</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
