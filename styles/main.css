@@ -1,29 +1,7 @@
-/* Import button component styles */
+/* Import design tokens first and component styles afterwards */
+@import url('./tokens.css');
 @import url('./button.css');
-
-/* THEME TOKENS
-   Change these two colors to update the site's theme.
-   Primary: accents, underlines, primary buttons
-   Secondary: outlines, subtle borders, neutral emphasis */
-:root {
-    --color-primary-600: #2563eb;
-    --color-primary-500: #3b82f6;
-    --color-primary-400: #60a5fa;
-    --color-primary-50: #eff6ff;
-    --color-primary-foreground: #ffffff;
-
-    --color-secondary: #334155; /* slate-700 */
-    --color-secondary-foreground: #ffffff;
-
-    --surface: #ffffff;
-    --surface-muted: #f8fafc;
-    --surface-border: #e2e8f0;
-
-    --text-color: #0f172a;
-    --muted-text: #64748b;
-
-    --shadow-rgb: 2, 6, 23; /* used for rgba shadows */
-}
+@import url('./timeline.css');
 
 /* Base reset */
 * { box-sizing: border-box; }
@@ -317,5 +295,80 @@ html { scroll-behavior: smooth; }
 @media (max-width: 900px) {
     .content-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Rules section layout - Similar to Overview */
+.rules {
+    padding: 120px 0;
+    background: var(--surface-muted);
+    color: var(--text-color);
+    min-height: 80vh;
+}
+
+.rules__header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rules__title {
+    margin: 0;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--text-color);
+    margin-bottom: 16px;
+}
+
+.rules__subtitle {
+    margin: 0;
+    color: var(--muted-text);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Content list styling for rules */
+.content-list {
+    margin: 24px 0 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.content-list li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 12px;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.content-list li:before {
+    content: "✓";
+    color: var(--accent-500);
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+/* Responsive adjustments for rules section */
+@media (max-width: 768px) {
+    .rules {
+        padding: 80px 0;
+    }
+    
+    .rules__header {
+        padding: 0 16px;
+    }
+    
+    .content-list li {
+        font-size: 15px;
+        padding-left: 20px;
     }
 }

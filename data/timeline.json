@@ -1,0 +1,105 @@
+[
+  {
+    "id": "registration",
+    "title": "Registration Opens",
+    "date": "2025-10-01T09:00:00Z",
+    "brief": "Sign up your team and secure your spot in the competition.",
+    "detail": "Registration is now open for Aurora Labs' Global Strategy Case Competition. This is your chance to showcase your strategic thinking and analytical skills while working on a real-world business challenge.",
+    "highlights": [
+      "Early bird registration includes exclusive mentorship sessions",
+      "Access to Aurora Labs' proprietary market research database",
+      "Networking opportunities with industry leaders and alumni",
+      "Teams must consist of 3-4 undergraduate or graduate students"
+    ],
+    "image": null,
+    "tags": ["registration"],
+    "link": null,
+    "status": "future"
+  },
+  {
+    "id": "team-formation",
+    "title": "Team Formation Deadline",
+    "date": "2025-11-10T23:59:00Z",
+    "brief": "Finalize your team composition and submit team profiles.",
+    "detail": "All teams must be finalized by this deadline. Use our team matching platform to connect with students who have complementary skills and backgrounds.",
+    "highlights": [
+      "Submit team member profiles and skill assessments",
+      "Attend virtual team building workshops",
+      "Access to team collaboration tools and resources",
+      "Mentorship matching based on team composition"
+    ],
+    "image": null,
+    "tags": ["teams"],
+    "link": null,
+    "status": "future"
+  },
+  {
+    "id": "case-release",
+    "title": "Case Release & Briefing Session",
+    "date": "2025-11-15T09:00:00Z",
+    "brief": "Receive the complete case study and attend the live briefing session.",
+    "detail": "The full case study will be released along with comprehensive datasets, market research, and detailed evaluation criteria. Teams will have access to Aurora Labs' internal data and strategic frameworks.",
+    "highlights": [
+      "Live briefing session with Aurora Labs executives",
+      "Access to proprietary datasets and market intelligence",
+      "Detailed evaluation rubric and judging criteria",
+      "Weekly office hours with industry mentors and advisors"
+    ],
+    "image": null,
+    "tags": ["case"],
+    "link": null,
+    "status": "future"
+  },
+  {
+    "id": "submission",
+    "title": "Final Submission Deadline",
+    "date": "2025-12-01T23:59:00Z",
+    "brief": "Submit your comprehensive strategy presentation and supporting materials.",
+    "detail": "Teams must submit their final presentations including strategic recommendations, market analysis, financial projections, and implementation roadmaps. Submissions will be evaluated by a panel of industry experts.",
+    "highlights": [
+      "Submit 15-20 slide executive presentation",
+      "Include detailed financial model and projections",
+      "Provide comprehensive market analysis and competitive landscape",
+      "Submit implementation timeline and risk mitigation strategies"
+    ],
+    "image": null,
+    "tags": ["submission"],
+    "link": null,
+    "status": "future"
+  },
+  {
+    "id": "finalists",
+    "title": "Finalists Announcement",
+    "date": "2025-12-05T17:00:00Z",
+    "brief": "Top 6 teams advance to the final round of presentations.",
+    "detail": "After rigorous evaluation, the top 6 teams will be selected to present their strategies to Aurora Labs' executive team and board of directors. Finalists will receive additional mentorship and presentation coaching.",
+    "highlights": [
+      "Top 6 teams selected based on strategic insight and feasibility",
+      "Finalists receive executive presentation coaching",
+      "Access to additional market data and industry insights",
+      "One-on-one mentorship sessions with senior executives"
+    ],
+    "image": null,
+    "tags": ["finalists"],
+    "link": null,
+    "status": "future"
+  },
+  {
+    "id": "grand-finals",
+    "title": "Grand Finals & Awards Gala",
+    "date": "2025-12-12T17:00:00Z",
+    "brief": "Live presentations to executive panel followed by awards ceremony.",
+    "detail": "Finalist teams will present their strategies to Aurora Labs' executive team, board members, and industry leaders. The winning team will receive recognition and potential internship opportunities.",
+    "highlights": [
+      "Live presentations to executive panel and board of directors",
+      "Q&A sessions with industry leaders and Aurora Labs executives",
+      "Awards ceremony with prizes and recognition",
+      "Networking reception with industry professionals and alumni"
+    ],
+    "image": null,
+    "tags": ["finals"],
+    "link": null,
+    "status": "future"
+  }
+]
+

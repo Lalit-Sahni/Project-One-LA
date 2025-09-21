@@ -1,0 +1,65 @@
+/* Design Tokens
+   - Palette tokens live under --color-*
+   - Semantic tokens alias palette tokens (e.g., --accent-*)
+   - Surface & typography tokens define page background and text colors
+   - Keep all component styles consuming ONLY these tokens
+*/
+
+:root {
+    /* Primary palette (editable) */
+    --color-primary: #3b82f6; /* base hue used to derive scale */
+    --color-primary-600: #2563eb; /* static fallback */
+    --color-primary-500: #3b82f6; /* base */
+    --color-primary-400: #60a5fa; /* static fallback */
+    --color-primary-50: #eff6ff;  /* static fallback */
+    --color-primary-foreground: #ffffff;
+
+    /* Secondary palette (neutral emphasis) */
+    --color-secondary: #334155; /* slate-700 */
+    --color-secondary-foreground: #ffffff;
+
+    /* Surfaces & text */
+    --surface: #ffffff;
+    --surface-muted: #f8fafc;
+    --surface-border: #e2e8f0;
+
+    --text-color: #0f172a;
+    --muted-text: #64748b;
+
+    /* Shadows use RGB to enable variable alpha */
+    --shadow-rgb: 2, 6, 23;
+
+    /* Semantic aliases (use these in components when possible) */
+    --accent-600: var(--color-primary-600);
+    --accent-500: var(--color-primary-500);
+    --accent-400: var(--color-primary-400);
+    --accent-50:  var(--color-primary-50);
+    --accent-foreground: var(--color-primary-foreground);
+    --accent-gradient: linear-gradient(135deg, var(--accent-500) 0%, var(--accent-600) 100%);
+}
+
+/* If the browser supports color-mix, derive the scale from --color-primary.
+   This lets a visual editor change ONLY --color-primary and get a coherent scale. */
+@supports (color: color-mix(in oklch, black, white)) {
+    :root {
+        /* Derive darker/lighter from base */
+        --color-primary-600: color-mix(in oklch, var(--color-primary) 85%, black 15%);
+        --color-primary-500: var(--color-primary);
+        --color-primary-400: color-mix(in oklch, var(--color-primary) 85%, white 15%);
+        --color-primary-50:  color-mix(in oklch, var(--color-primary) 8%,  white 92%);
+    }
+}
+
+/* Optional dark theme overrides (toggle with data-theme="dark" on <html>) */
+html[data-theme="dark"] {
+    --surface: #0b0f19;
+    --surface-muted: #0e1422;
+    --surface-border: #1f2a37;
+
+    --text-color: #e6eaf2;
+    --muted-text: #b5c0d0;
+
+    /* Keep primary the same by default; editors can override if needed */
+}
+
+
